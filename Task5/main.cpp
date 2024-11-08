@@ -2,10 +2,13 @@
 #include <fstream>
 #include <string>
 #include <windows.h>
+#include <map>
 using namespace std;
 
 void combination(string str, int& alternation_count, int& total_count);
 void str_tolower(string& str);
+map<string, int> count_words(string str);
+string find_max_count(map<string, int> words);
 
 int main() {
 	setlocale(LC_ALL, "Russian");
@@ -27,7 +30,12 @@ int main() {
 	combination(result, immutability_count, total_count);
 
 	cout << immutability_count << endl;
-	cout << total_count;
+	cout << total_count << endl;
+
+	map<string, int> words = count_words(result);
+	string word = find_max_count(words);
+
+	cout << "Самое частое слово: " << word;
 
 	return 0;
 }
@@ -72,5 +80,42 @@ void combination(string str, int& immutability_count, int& total_count) {
 			total_count++;
 		}
 	} 
+}
+
+map<string, int> count_words(string str) {
+	map<string, int> words;
+	int start_index = 0;
+	for (int i = 1; i < str.length(); i++)
+	{
+
+		if (!is_letter(str[i]) && is_letter(str[i - 1]) && start_index < i) {
+			string word = str.substr(start_index, i - start_index);
+
+			start_index = i + 1;
+
+			if (words.count(word) == 0) {
+				words[word] = 1;
+			}
+			else {
+				words[word]++;
+			}
+		}
+	}
+
+	return words;
+}
+
+string find_max_count(map<string, int> words) {
+	string max_word;
+	int max_count = 0;
+
+	for (const auto& pair : words) {
+		if (pair.second > max_count) {
+			max_count = pair.second;
+			max_word = pair.first;
+		}
+	}
+
+	return max_word;
 }
 
