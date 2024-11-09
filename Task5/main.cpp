@@ -58,10 +58,11 @@ bool is_vowel(char symbol) {
 
 //cheking if the symbol is letter
 bool is_letter(char symbol) {
+	bool letter = false;
 	if (symbol <= -1 && symbol >= -32) {
-		return true; 
+		letter = true; 
 	} 
-	return false; 
+	return letter; 
 }
 
 //converting the string to lower case
@@ -136,8 +137,8 @@ void count_pairs(string str, int* pairs) {
 		if (is_letter(str[i]) && !is_letter(str[i - 1])) {
 			second_letter = is_vowel(str[i]);
 
-			if (first_letter + second_letter == 2) {
-				*pairs++;
+			if (first_letter && second_letter) {
+				pairs[0]++;
 			}
 			else if (!first_letter && !second_letter) {
 				pairs[1]++;
@@ -149,7 +150,7 @@ void count_pairs(string str, int* pairs) {
 				pairs[3]++;
 			}
 
-			second_letter = first_letter;
+			first_letter = second_letter;
 		}
 	}
 }
