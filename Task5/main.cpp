@@ -5,10 +5,11 @@
 #include <map>
 using namespace std;
 
-void combination(string str, int& alternation_count, int& total_count);
+void combination(string str, int& alternation_count, int& total_count);// task 5
 void str_tolower(string& str);
-map<string, int> count_words(string str);
-string find_max_count(map<string, int> words);
+map<string, int> count_words(string str); //task 9 
+string find_max_count(map<string, int> words);//task 9
+void count_pairs(string str, int* pairs); //task 6
 
 int main() {
 	setlocale(LC_ALL, "Russian");
@@ -25,17 +26,20 @@ int main() {
 	fin.close();
 	
 	int immutability_count = 0, total_count = 0;
+	int* pairs = new int[4];
+	pairs[0] = pairs[1] = pairs[2] = pairs[3] = 0;
 
 	str_tolower(result);
 	combination(result, immutability_count, total_count);
-
-	cout << immutability_count << endl;
-	cout << total_count << endl;
-
 	map<string, int> words = count_words(result);
 	string word = find_max_count(words);
+	count_pairs(result, pairs);
 
-	cout << "Самое частое слово: " << word;
+	cout << "Чередование гласной и согласной: " << immutability_count << endl;
+	cout << "Гласная и гласная или согласная и согласная: " << total_count - immutability_count << endl;
+	cout << "Самое частое слово: " << word << endl;
+	cout << "Чередования:\nГласная-гласная: " << pairs[0] << "\nСолгасная-согласная: " 
+		<< pairs[1] << "\nГласная-согласная:" << pairs[2] << "\nСогласная-гласная: " << pairs[3];
 
 	return 0;
 }
@@ -82,6 +86,7 @@ void combination(string str, int& immutability_count, int& total_count) {
 	} 
 }
 
+//counting all words
 map<string, int> count_words(string str) {
 	map<string, int> words;
 	int start_index = 0;
@@ -105,6 +110,7 @@ map<string, int> count_words(string str) {
 	return words;
 }
 
+//finding the most frequent word
 string find_max_count(map<string, int> words) {
 	string max_word;
 	int max_count = 0;
@@ -119,3 +125,31 @@ string find_max_count(map<string, int> words) {
 	return max_word;
 }
 
+//coutning pairs: 0 - vowel vowel; 1 - consonant consonant;
+//				  2 - vowel consonant; 3 - consonant vowel
+void count_pairs(string str, int* pairs) {
+
+	bool first_letter = is_vowel(str[0]); //if vowel - true; if consonant - false 
+	bool second_letter;
+	for (int i = 1; i < str.length(); i++)
+	{
+		if (is_letter(str[i]) && !is_letter(str[i - 1])) {
+			second_letter = is_vowel(str[i]);
+
+			if (first_letter + second_letter == 2) {
+				*pairs++;
+			}
+			else if (!first_letter && !second_letter) {
+				pairs[1]++;
+			}
+			else if (first_letter && !second_letter) {
+				pairs[2]++;
+			}
+			else {
+				pairs[3]++;
+			}
+
+			second_letter = first_letter;
+		}
+	}
+}

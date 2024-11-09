@@ -47,6 +47,7 @@ void str_tolower(string& str) {
 	}
 }
 
+//counting all words
 map<string, int> count_words(string str) {
 	map<string, int> words;
 	int start_index = 0;
@@ -70,6 +71,7 @@ map<string, int> count_words(string str) {
 	return words;
 }
 
+//finding the most frequnt word
 string find_max_count(map<string, int> words) {
 	string max_word;
 	int max_count = 0;
