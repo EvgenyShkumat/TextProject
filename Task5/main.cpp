@@ -6,10 +6,10 @@
 using namespace std;
 
 void combination(string str, int& alternation_count, int& total_count);// task 5
-void str_tolower(string& str);
+void count_pairs(string str, int* pairs); //task 6
 map<string, int> count_words(string str); //task 9 
 string find_max_count(map<string, int> words);//task 9
-void count_pairs(string str, int* pairs); //task 6
+void str_tolower(string& str);
 
 int main() {
 	setlocale(LC_ALL, "Russian");
@@ -38,7 +38,7 @@ int main() {
 	cout << "Чередование гласной и согласной: " << immutability_count << endl;
 	cout << "Гласная и гласная или согласная и согласная: " << total_count - immutability_count << endl;
 	cout << "Самое частое слово: " << word << endl;
-	cout << "Чередования:\nГласная-гласная: " << pairs[0] << "\nСолгасная-согласная: " 
+	cout << "Чередования(первые буквы двух слов по парам):\nГласная-гласная: " << pairs[0] << "\nСолгасная-согласная: " 
 		<< pairs[1] << "\nГласная-согласная:" << pairs[2] << "\nСогласная-гласная: " << pairs[3];
 
 	return 0;
@@ -88,13 +88,14 @@ void combination(string str, int& immutability_count, int& total_count) {
 }
 
 //counting all words
+//in the line 98 cheking if the word is compound (and between two roots is '-')
 map<string, int> count_words(string str) {
 	map<string, int> words;
 	int start_index = 0;
 	for (int i = 1; i < str.length(); i++)
 	{
-
-		if (!is_letter(str[i]) && is_letter(str[i - 1]) && start_index < i) {
+		if ((!is_letter(str[i]) && is_letter(str[i - 1]) && start_index < i) && 
+			!(str[i] == '-' && is_letter(str[i - 1]) && is_letter(str[i + 1]))) { 
 			string word = str.substr(start_index, i - start_index);
 
 			start_index = i + 1;
@@ -128,13 +129,15 @@ string find_max_count(map<string, int> words) {
 
 //coutning pairs: 0 - vowel vowel; 1 - consonant consonant;
 //				  2 - vowel consonant; 3 - consonant vowel
+//in the line 140 cheking if the word is compound (and between two roots is '-')
 void count_pairs(string str, int* pairs) {
 
 	bool first_letter = is_vowel(str[0]); //if vowel - true; if consonant - false 
 	bool second_letter;
 	for (int i = 1; i < str.length(); i++)
 	{
-		if (is_letter(str[i]) && !is_letter(str[i - 1])) {
+		if (is_letter(str[i]) && !is_letter(str[i - 1]) && 
+			!(str[i] == '-' && is_letter(str[i - 1]) && is_letter(str[i + 1]))) {
 			second_letter = is_vowel(str[i]);
 
 			if (first_letter && second_letter) {
