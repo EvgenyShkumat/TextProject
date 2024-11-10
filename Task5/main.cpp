@@ -16,6 +16,7 @@ int main() {
 	SetConsoleCP(ANSI_CHARSET);
 
 	ifstream fin("input.txt");
+	ofstream fout("3_4_s.txt");
 	string buf = "";
 	string result = "";
 
@@ -35,11 +36,11 @@ int main() {
 	string word = find_max_count(words);
 	count_pairs(result, pairs);
 
-	cout << "Чередование гласной и согласной: " << immutability_count << endl;
-	cout << "Гласная и гласная или согласная и согласная: " << total_count - immutability_count << endl;
-	cout << "Самое частое слово: " << word << endl;
-	cout << "Чередования(первые буквы двух слов по парам):\nГласная-гласная: " << pairs[0] << "\nСолгасная-согласная: " 
-		<< pairs[1] << "\nГласная-согласная:" << pairs[2] << "\nСогласная-гласная: " << pairs[3];
+	fout << "Чередование гласной и согласной: " << immutability_count << endl; //t5
+	fout << "Гласная и гласная или согласная и согласная: " << total_count - immutability_count << endl; //t5
+	fout << "Самое частое слово: " << word << endl; //t9
+	fout << "Чередования(первые буквы двух слов по парам):\nГласная-гласная: " << pairs[0] << "\nСолгасная-согласная: " 
+		<< pairs[1] << "\nГласная-согласная:" << pairs[2] << "\nСогласная-гласная: " << pairs[3]; //t6
 
 	return 0;
 }
