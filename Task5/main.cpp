@@ -35,12 +35,16 @@ int main() {
 	map<string, int> words = count_words(result);
 	string word = find_max_count(words);
 	count_pairs(result, pairs);
+	double total_pairs = pairs[0] + pairs[1] + pairs[2] + pairs[3];
 
-	fout << "Чередование гласной и согласной: " << immutability_count << endl; //t5
-	fout << "Гласная и гласная или согласная и согласная: " << total_count - immutability_count << endl; //t5
+	fout << "Чередование гласной и согласной: " << (double)immutability_count / total_count<< endl; //t5
+	fout << "Гласная и гласная или согласная и согласная: " << 
+		(double)(total_count - immutability_count) / total_count << endl; //t5
 	fout << "Самое частое слово: " << word << endl; //t9
-	fout << "Чередования(первые буквы двух слов по парам):\nГласная-гласная: " << pairs[0] << "\nСолгасная-согласная: " 
-		<< pairs[1] << "\nГласная-согласная:" << pairs[2] << "\nСогласная-гласная: " << pairs[3]; //t6
+	fout << "Чередования(первые буквы двух слов по парам):\nГласная-гласная: " << 
+		pairs[0] / total_pairs << "\nСолгасная-согласная: " <<  pairs[1] / total_pairs
+		<< "\nГласная-согласная:" << pairs[2] / total_pairs << "\nСогласная-гласная: "
+		<< pairs[3] / total_pairs; //t6
 
 	return 0;
 }
@@ -89,7 +93,7 @@ void combination(string str, int& immutability_count, int& total_count) {
 }
 
 //counting all words
-//in the line 98 cheking if the word is compound (and between two roots is '-')
+//in the line 99 cheking if the word is compound (and between two roots is '-')
 map<string, int> count_words(string str) {
 	map<string, int> words;
 	int start_index = 0;
@@ -137,7 +141,7 @@ void count_pairs(string str, int* pairs) {
 	bool second_letter;
 	for (int i = 1; i < str.length(); i++)
 	{
-		if (is_letter(str[i]) && !is_letter(str[i - 1]) && 
+		if (is_letter(str[i]) && !is_letter(str[i - 1]) &&
 			!(str[i] == '-' && is_letter(str[i - 1]) && is_letter(str[i + 1]))) {
 			second_letter = is_vowel(str[i]);
 
